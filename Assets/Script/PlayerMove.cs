@@ -19,6 +19,8 @@ public class PlayerMove : MonoBehaviour
     // Indique si le joueur doit sauter à la prochaine frame physique
     private bool jump = false;
 
+    [SerializeField] AudioClip sfxAttack;
+
 
     void Awake()
     {
@@ -61,6 +63,7 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             animator.SetBool("Attack", true); // lance l’animation
+            audioSource.PlayOneShot(sfxAttack);
         }
         else
         {
