@@ -1,13 +1,17 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerDead : MonoBehaviour
 {
     public GameObject player;
     private Animator playerAnimator;
+    [SerializeField] AudioClip sfxDead;
+    private AudioSource audioSource;
 
     private void Start()
     {
         playerAnimator = player.GetComponent<Animator>();
+        audioSource = player.GetComponent<AudioSource>();
     }
 
 
@@ -17,6 +21,7 @@ public class PlayerDead : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerAnimator.SetTrigger("Dead");
+            audioSource.PlayOneShot(sfxDead);
 
             PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
             if(playerMovement != null)
