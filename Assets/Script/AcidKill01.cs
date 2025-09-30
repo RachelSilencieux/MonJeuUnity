@@ -7,10 +7,11 @@ public class AcidKill01 : MonoBehaviour
 
     private void Start()
     {
-        playerAnimator = player.GetComponent<Animator>();
+        if (player != null)
+            playerAnimator = player.GetComponent<Animator>();
     }
 
-    void OnTriggerEnter2D(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)   
     {
         if (other.CompareTag("Player"))
         {
@@ -18,7 +19,7 @@ public class AcidKill01 : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)  
     {
         if (other.CompareTag("Player"))
         {

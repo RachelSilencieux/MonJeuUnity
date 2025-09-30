@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -24,17 +25,22 @@ public class PlayerDead : MonoBehaviour
             audioSource.PlayOneShot(sfxDead);
 
             PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
-            if(playerMovement != null)
-            {
-                playerMovement.enabled = false;
-            }
+            if (playerMovement != null) playerMovement.enabled = false;
 
+            StartCoroutine(WaitAndGameOver(other.gameObject));
         }
-
-    
-
-
-
     }
+
+    private IEnumerator WaitAndGameOver(GameObject player)
+    {
+        yield return new WaitForSeconds(2f); 
+
+        var health = player.GetComponent<PlayerHealth>();
+        if (health != null)
+            health.TakeDamage(health.maxHealth);
+        else
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
+    }
+
 
 }

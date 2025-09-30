@@ -9,43 +9,43 @@ public class PlayerHealth : MonoBehaviour
     private int currentHealth;
 
     [Header("Vies du joueur")]
-    public int maxLives = 3;                
-    private static int currentLives = -1;  
+    public int maxLives = 3;
+    private int currentLives;
 
-    private bool isDead = false;            
+    private bool isDead = false;
 
-    private float reloadDelay = 2f;
-    public string sceneToLoad = "GameOver";
+    [Header("Transition")]
+    public float respawnDelay = 2f;
+    public string gameOverScene = "GameOver";
 
-    
+    [Header("Checkpoint")]
+    private Vector3 lastCheckpointPos;
+    private bool checkpointSet = false;
 
     void Awake()
     {
         currentHealth = maxHealth;
-
-        if (currentLives < 0)
-            currentLives = maxLives;
-
-
+        currentLives = maxLives;
+        lastCheckpointPos = transform.position;
+        checkpointSet = true;
 
         Debug.Log($"[Awake] HP={currentHealth}/{maxHealth} | Lives={currentLives}/{maxLives}");
     }
+
+
 
     public void AddHealth(int v)
     {
         currentHealth = Mathf.Clamp(currentHealth + v, 0, maxHealth);
         Debug.Log("Player gagne " + v + " PV. HP = " + currentHealth);
-
     }
 
     public void TakeDamage(int dmg)
     {
-        if (isDead) return; 
+        if (isDead) return;
 
         currentHealth -= dmg;
         Debug.Log("Player prend " + dmg + " dégâts. HP restants = " + currentHealth);
-
-
 
         if (currentHealth <= 0)
             Die();
@@ -64,22 +64,48 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentLives > 0)
         {
-            StartCoroutine(CoDelay(SceneManager.GetActiveScene().name, reloadDelay));
+            StartCoroutine(Respawn());
         }
         else
         {
-            StartCoroutine(CoDelay(sceneToLoad, reloadDelay));
+            StartCoroutine(GameOver());
         }
     }
 
-    IEnumerator CoDelay(string name, float seconds)
+    IEnumerator Respawn()
     {
-        yield return new WaitForSecondsRealtime(seconds);
-        SceneManager.LoadScene(name);
+        yield return new WaitForSeconds(respawnDelay);
+
+        currentHealth = maxHealth;
+        isDead = false;
+
+        if (checkpointSet)
+            transform.position = lastCheckpointPos;
+
+        var anim = GetComponent<Animator>();
+        if (anim)
+        {
+            anim.ResetTrigger("Dead");
+            anim.Play("Idle");
+        }
+
+
+        var move = GetComponent<PlayerMove>();
+        if (move) move.enabled = true;
+
+        Debug.Log("Respawn au checkpoint " + lastCheckpointPos);
     }
 
-    public static void ResetLivesForNewGame()
+    IEnumerator GameOver()
     {
-        currentLives = -1; 
+        yield return new WaitForSeconds(respawnDelay);
+        SceneManager.LoadScene(gameOverScene);
+    }
+
+    public void SetCheckpoint(Vector3 pos)
+    {
+        lastCheckpointPos = pos;
+        checkpointSet = true;
+        Debug.Log("Checkpoint activé en " + pos);
     }
 }
