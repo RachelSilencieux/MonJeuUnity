@@ -72,6 +72,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Script\StartGame.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
+    <Compile Include="Assets\Script\PlayerAttack.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Assets\Script\PlayerHealth.cs" />
     <Compile Include="Assets\Script\PlayerDead.cs" />
     <Compile Include="Assets\HealthHeartSystem\Scripts\HealthBarController.cs" />
+    <Compile Include="Assets\Script\EnemyHealth.cs" />
     <Compile Include="Assets\Script\PlayerAnimation.cs" />
     <Compile Include="Assets\Script\PlayAgain.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
